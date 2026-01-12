@@ -17,7 +17,7 @@ connect-direct-prometheus-exporters/
 ├── exporters/
 │   ├── cd-cli-exporter/         # Uses Connect:Direct CLI commands
 │   ├── cd-restapi-exporter/     # Uses Connect:Direct WebServices HTTP requests
-│   ├── cd-java-exporter/        # Uses Connect:Direct Java APIbs
+│   ├── cd-java-exporter/        # Uses Connect:Direct Java APIs
 │
 ├── docs/
 │   ├── cd-cli-exporter.md
