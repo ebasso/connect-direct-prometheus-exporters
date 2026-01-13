@@ -9,10 +9,10 @@ git clone <repository-url>
 
 cd connect-direct-prometheus-exporters
 
-cd prometheus-exporters/cd-cli-exporter
+cd exporters/cd-cli-exporter
 ```
 
-Inside the `prometheus-exporters/cd-cli-exporter` directory:
+Inside the `exporters/cd-cli-exporter` directory:
 
 ```bash
 python3.11 -m venv .venv

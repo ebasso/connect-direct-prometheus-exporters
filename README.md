@@ -14,10 +14,13 @@ connect-direct-prometheus-exporters/
 ├── LICENSE
 ├── .gitignore
 │
-├── exporters/
-│   ├── cd-cli-exporter/         # Uses Connect:Direct CLI commands
-│   ├── cd-restapi-exporter/     # Uses Connect:Direct WebServices HTTP requests
-│   ├── cd-java-exporter/        # Uses Connect:Direct Java APIs
+├── otel-exporters/               # OpenTelemetry exporters
+│   ├── cd-cli-metrics-exporter/  # Uses Connect:Direct CLI commands
+│
+├── prometheus-exporters/.        # Prometheus exporters
+│   ├── cd-cli-exporter/          # Uses Connect:Direct CLI commands
+│   ├── cd-restapi-exporter/      # Uses Connect:Direct WebServices HTTP requests
+│   ├── cd-java-exporter/         # Uses Connect:Direct Java APIs
 │
 ├── docs/
 │   ├── cd-cli-exporter.md

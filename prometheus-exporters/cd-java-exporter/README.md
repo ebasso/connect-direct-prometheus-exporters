@@ -25,7 +25,7 @@ Prometheus exporter for IBM Connect:Direct that collects and exposes metrics abo
 ### 1. Compile the project
 
 ```bash
-cd exporters/cd-java-exporter
+cd prometheus-exporters/cd-java-exporter
 
 mvn clean compile
 ```
