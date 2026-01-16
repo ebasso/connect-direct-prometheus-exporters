@@ -39,7 +39,6 @@ venv.bak/
 
 readme.txt
 truststore.jks
-prometheus/cd-restapi-exporter
 
 # Maven
 target/
