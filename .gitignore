@@ -1,6 +1,15 @@
 .DS_Store
 .vscode/
 
+readme.txt
+truststore.jks
+prometheus-exporters/cd-restapi-exporter/ibmcd_restapi_cert_exporter.py
+cdws-server.pem
+client-truststore.p12
+client-keystore.p12
+cert-auth-mediawiki.txt
+rest-client.pem
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -37,8 +46,7 @@ ENV/
 env.bak/
 venv.bak/
 
-readme.txt
-truststore.jks
+
 
 # Maven
 target/
