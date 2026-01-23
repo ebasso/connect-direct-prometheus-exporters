@@ -20,27 +20,52 @@ metrics.set_meter_provider(provider)
 # Create a meter
 meter = metrics.get_meter(__name__)
 
-# Define metrics using OpenTelemetry
+# Global variables to store metric values
+metric_values = {
+    'hold': 0,
+    'wait': 0,
+    'timer': 0,
+    'exec': 0
+}
+
+# Observable gauge callbacks
+def hold_callback(options):
+    yield metrics.Observation(metric_values['hold'])
+
+def wait_callback(options):
+    yield metrics.Observation(metric_values['wait'])
+
+def timer_callback(options):
+    yield metrics.Observation(metric_values['timer'])
+
+def exec_callback(options):
+    yield metrics.Observation(metric_values['exec'])
+
+# Register callbacks for observable gauges
 ibm_cd_hold_total = meter.create_observable_gauge(
     name='ibm_cd_processes_hold_total',
+    callbacks=[hold_callback],
     description='Total processes in HOLD state',
     unit='1'
 )
 
 ibm_cd_wait_total = meter.create_observable_gauge(
     name='ibm_cd_processes_wait_total',
+    callbacks=[wait_callback],
     description='Total processes in WAIT state',
     unit='1'
 )
 
 ibm_cd_timer_total = meter.create_observable_gauge(
     name='ibm_cd_processes_timer_total',
+    callbacks=[timer_callback],
     description='Total processes in TIMER state',
     unit='1'
 )
 
 ibm_cd_exec_total = meter.create_observable_gauge(
     name='ibm_cd_processes_exec_total',
+    callbacks=[exec_callback],
     description='Total processes in EXEC state',
     unit='1'
 )
@@ -51,13 +76,7 @@ ibm_cd_scrape_errors = meter.create_counter(
     unit='1'
 )
 
-# Global variables to store metric values
-metric_values = {
-    'hold': 0,
-    'wait': 0,
-    'timer': 0,
-    'exec': 0
-}
+
 
 def run_cmd(base_path):
     """Executes the selpro command and returns the output"""
@@ -132,59 +151,25 @@ def collect_metrics(base_path):
         print(f"[ERROR] Failed to collect metrics: {e}")
         ibm_cd_scrape_errors.add(1)
 
-# Observable gauge callbacks
-def hold_callback(options):
-    yield metrics.Observation(metric_values['hold'])
-
-def wait_callback(options):
-    yield metrics.Observation(metric_values['wait'])
-
-def timer_callback(options):
-    yield metrics.Observation(metric_values['timer'])
-
-def exec_callback(options):
-    yield metrics.Observation(metric_values['exec'])
-
-# Register callbacks for observable gauges
-ibm_cd_hold_total = meter.create_observable_gauge(
-    name='ibm_cd_processes_hold_total',
-    callbacks=[hold_callback],
-    description='Total processes in HOLD state',
-    unit='1'
-)
-
-ibm_cd_wait_total = meter.create_observable_gauge(
-    name='ibm_cd_processes_wait_total',
-    callbacks=[wait_callback],
-    description='Total processes in WAIT state',
-    unit='1'
-)
-
-ibm_cd_timer_total = meter.create_observable_gauge(
-    name='ibm_cd_processes_timer_total',
-    callbacks=[timer_callback],
-    description='Total processes in TIMER state',
-    unit='1'
-)
-
-ibm_cd_exec_total = meter.create_observable_gauge(
-    name='ibm_cd_processes_exec_total',
-    callbacks=[exec_callback],
-    description='Total processes in EXEC state',
-    unit='1'
-)
 
 def main():
+    global DEBUG  # Declares DEBUG as global to modify it inside the function
+
     """Starts the OpenTelemetry exporter"""
     parser = argparse.ArgumentParser(description="IBM Connect:Direct OpenTelemetry Exporter")
     parser.add_argument('--base-path', required=True, help='Base path for IBM Connect:Direct installation')
     parser.add_argument('--port', type=int, default=9400, help='Port to listen on')
     parser.add_argument('--interval', type=int, default=60, help='Scrape interval in seconds')
+    # action='store_true' means that if the argument is present, the value will be True, otherwise False.
+    # can be used --debug or --debug=True
+    parser.add_argument('--debug', action='store_true', help='Enable debug output')
+
     args = parser.parse_args()
 
     port = args.port
     interval = args.interval
     base_path = args.base_path
+    DEBUG = args.debug
 
     print(f"[INFO] Starting IBM Connect:Direct OpenTelemetry Exporter on port {port}")
     print(f"[INFO] Collection interval: {interval} seconds")

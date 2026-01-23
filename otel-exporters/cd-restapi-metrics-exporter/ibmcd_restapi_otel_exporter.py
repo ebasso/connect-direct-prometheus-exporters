@@ -221,6 +221,8 @@ def collect_metrics(cdws_config, signon_data):
 
 
 def main():
+    global DEBUG  # Declares DEBUG as global to modify it inside the function
+
     """Starts the Prometheus exporter"""
     parser = argparse.ArgumentParser(description="IBM Connect:Direct Prometheus Exporter")
     parser.add_argument('--cdws_server', required=True, help='IBM Connect:Direct Web Services server URL. Sample: https://localhost:9443')
@@ -233,6 +235,9 @@ def main():
     parser.add_argument('--cd_protocol', default="TLS1.3", help='C:D Web Services node')
     parser.add_argument('--port', type=int, default=LOCALPORT, help='Port to listen on')
     parser.add_argument('--interval', type=int, default=INTERVAL, help='Scrape interval in seconds')
+    parser.add_argument('--debug', action='store_true', help='Enable debug output')
+    
+
     args = parser.parse_args()
 
     port = args.port
@@ -245,6 +250,7 @@ def main():
         "cd_port": args.cd_port,
         "cd_protocol": args.cd_protocol
     }
+    DEBUG = args.debug
 
     print(f"[INFO] Starting IBM Connect:Direct Prometheus Exporter on port {port}")
     print(f"[INFO] Collection interval: {interval} seconds")
